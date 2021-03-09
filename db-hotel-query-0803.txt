@@ -63,3 +63,21 @@ FROM `pagamenti`
 INNER JOIN `paganti`
 ON `pagamenti`.`pagante_id` = `paganti`.`id`
 WHERE `pagamenti`.`prenotazione_id` = 7;
+
+BONUS 1- Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
+
+SELECT COUNT(`prenotazioni_has_ospiti`.`ospite_id`) AS `num_prenotazioni`, `ospiti`.`name`, `ospiti`.`lastname`
+FROM `prenotazioni_has_ospiti`
+INNER JOIN `ospiti`
+ON `ospiti`.`id` = `prenotazioni_has_ospiti`.`ospite_id`
+GROUP BY `ospite_id`
+HAVING `num_prenotazioni` > 1;
+
+BONUS 2- Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze non ancora prenotate)
+
+SELECT `stanze`.`room_number`, COUNT(`prenotazioni`.`stanza_id`) AS `num_prenotazioni`
+FROM `stanze`
+LEFT JOIN `prenotazioni`
+ON `prenotazioni`.`stanza_id` = `stanze`.`id`
+GROUP BY `stanze`.`room_number`
+ORDER BY `num_prenotazioni` ASC;
